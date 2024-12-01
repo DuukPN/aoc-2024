@@ -11,7 +11,7 @@ def solve(data, part=2):
 
 
 def part_one(data):
-    return sum(map(lambda x: abs(x[0] - x[1]), zip(*map(lambda x: sorted(x), zip(*[[int(x) for x in line.split("  ")] for line in data])))))
+    return sum(abs(x[0]-x[1]) for x in zip(*[sorted(x) for x in zip(*[[int(x) for x in l.split("  ")] for l in data])]))
 
 
 def part_one_old(data):
@@ -32,7 +32,7 @@ def part_one_old(data):
 
 
 def part_two(data):
-    return sum(map(lambda x: x * p[1].count(x), (p := tuple(zip(*[[int(x) for x in line.split("  ")] for line in data])))[0]))
+    return sum(map(lambda x: x * p[1].count(x), (p := tuple(zip(*[[int(x) for x in l.split("  ")] for l in data])))[0]))
 
 
 def part_two_old(data):
