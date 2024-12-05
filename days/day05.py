@@ -1,6 +1,8 @@
 import numpy as np
 from lib import load_input
 from collections import defaultdict
+from functools import cmp_to_key
+import time
 
 
 def solve(data, part=2):
@@ -28,6 +30,10 @@ def part_one(data):
     return res
 
 
+def part_one_oneline(data):
+    return sum(int(line.split(",")[line.count(",") // 2]) for line in data[data.index("") + 1:] if all(not any(x in ({a: set(line.split("|")[1] for line in data[:data.index("")] if line.split("|")[0] == a) for a in set(line.split("|")[0] for line in data[:data.index("")])})[line.split(",")[i + 1]] for x in line.split(",")[:i + 1]) for i in range(line.count(","))))
+
+
 def part_two(data):
     rules = defaultdict(set)
     for line in data:
@@ -40,19 +46,10 @@ def part_two(data):
     for line in data[data.index("") + 1:]:
         o = [int(x) for x in line.split(",")]
         if not all(not any(x in rules[o[i]] for x in o[:i]) for i in range(1, len(o))):
-            my_sort(o, rules)
+            o.sort(key=cmp_to_key(lambda a, b: -1 if b in rules[a] else 1))
             res += o[len(o) // 2]
 
     return res
-
-
-def my_sort(l, rules):
-    for i, s in enumerate(l):
-        min_idx = i
-        for j in range(i + 1, len(l)):
-            if l[min_idx] in rules[l[j]]:
-                min_idx = j
-        (l[i], l[min_idx]) = (l[min_idx], l[i])
 
 
 if __name__ == "__main__":
